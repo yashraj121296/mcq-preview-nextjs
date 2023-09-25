@@ -1,30 +1,23 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import PreviewBanner from "../../components/PreviewBanner"
 import * as contentful from "../../utils/contentful"
-import {useContentfulLiveUpdates} from '@contentful/live-preview/react';
-import {Grid, GridItem} from '@chakra-ui/react'
-import {Icon} from '@chakra-ui/react'
+import {Box, Button, Center, Container, Icon, Radio, RadioGroup, Stack} from '@chakra-ui/react'
 import {FcIdea} from 'react-icons/fc'
-import {Box, Button, Center, Container, Radio, RadioGroup, Stack} from "@chakra-ui/react";
 
 
 const questionStyle = {
     textAlign: 'center', marginTop: '50px'
 };
-
-const choiceStyle = {
-    textAlign: 'left', marginTop: '60px'
-};
 'use client'
 export default function ProductPage(props) {
 
     //const props = useContentfulLiveUpdates(props)
-    if (props.error) {
-        return (<div>
-            <h1>An Error occurred: </h1>
-            <h2>{props.error}</h2>
-        </div>)
-    }
+    // if (props.error) {
+    //     return (<div>
+    //         <h1>An Error occurred: </h1>
+    //         <h2>{props.error}</h2>
+    //     </div>)
+    // }
     const [result, newResult] = useState('')
 
     function updateResult(choice) {
@@ -45,7 +38,7 @@ export default function ProductPage(props) {
         const selectedChoice = JSON.parse(selectedValue)
         let isCorrectChoice = selectedChoice.isCorrectChoice;
 
-        if (isCorrectChoice == false) {
+        if (isCorrectChoice === false) {
             let correctChoice = choices.find((choice) => choice.choiceText === selectedChoice.choiceText);
             let newChoiceColorMap = choiceColorMapping.map(it => ({
                 ...it,
@@ -54,7 +47,7 @@ export default function ProductPage(props) {
             setChoiceColorMapping(newChoiceColorMap)
             updateResult(selectedChoice)
         }
-        if (isCorrectChoice == true) {
+        if (isCorrectChoice === true) {
             let correctChoice = choices.find((choice) => choice.choiceText === selectedChoice.choiceText);
             let newChoiceColorMap = choiceColorMapping.map(it => ({
                 ...it,
@@ -114,13 +107,11 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
     // console.log("context: ", context)
     // Get data from headless CMS
-    const client = contentful.previewClient
-
     // const client = context.preview
     //   ? contentful.previewClient
     //   : contentful.client
 
-    const question = await client
+    const question = await contentful.previewClient
         .getEntries({
             content_type: 'multiplesChoiceQuestion', limit: 1, "fields.code": context.params.slug,
         })
