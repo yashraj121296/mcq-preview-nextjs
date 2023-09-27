@@ -9,7 +9,7 @@ const questionStyle = {
     textAlign: 'center', marginTop: '50px'
 };
 'use client'
-export default function ProductPage(props) {
+export default function QuestionPage(props) {
 
     //const props = useContentfulLiveUpdates(props)
     // if (props.error) {
